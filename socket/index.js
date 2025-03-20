@@ -11,14 +11,23 @@ let gameState = deepClone(GAME_STATE_INIT)
 const httpServer = createServer()
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
+    origin: ["http://localhost:3000", "http://polyquiz.aspc.kz", "http://polyquiz.aspc.kz:3000"],
+    methods: ["GET", "POST"],
+    credentials: true
   },
-  transports: ['websocket', 'polling']
+  transports: ['websocket', 'polling'],
+  pingTimeout: 60000,
+  pingInterval: 25000
 })
 
 console.log(`Server running on port ${WEBSOCKET_SERVER_PORT}`)
-httpServer.listen(WEBSOCKET_SERVER_PORT, "0.0.0.0")
+httpServer.listen(WEBSOCKET_SERVER_PORT, "0.0.0.0", () => {
+  console.log(`Socket.IO server is running on port ${WEBSOCKET_SERVER_PORT}`);
+})
+
+io.engine.on("connection_error", (err) => {
+  console.log("Connection error:", err);
+});
 
 io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)
