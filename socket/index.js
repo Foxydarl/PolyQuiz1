@@ -4,10 +4,12 @@ import Manager from "./roles/manager.js"
 import Player from "./roles/player.js"
 import { abortCooldown } from "./utils/cooldown.js"
 import deepClone from "./utils/deepClone.js"
+import { createServer } from "http"
 
 let gameState = deepClone(GAME_STATE_INIT)
 
-const io = new Server({
+const httpServer = createServer()
+const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
@@ -16,7 +18,7 @@ const io = new Server({
 })
 
 console.log(`Server running on port ${WEBSOCKET_SERVER_PORT}`)
-io.listen(WEBSOCKET_SERVER_PORT, "0.0.0.0")
+httpServer.listen(WEBSOCKET_SERVER_PORT, "0.0.0.0")
 
 io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)
