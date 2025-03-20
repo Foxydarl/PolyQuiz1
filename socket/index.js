@@ -10,11 +10,13 @@ let gameState = deepClone(GAME_STATE_INIT)
 const io = new Server({
   cors: {
     origin: "*",
+    methods: ["GET", "POST"]
   },
+  transports: ['websocket', 'polling']
 })
 
 console.log(`Server running on port ${WEBSOCKET_SERVER_PORT}`)
-io.listen(WEBSOCKET_SERVER_PORT)
+io.listen(WEBSOCKET_SERVER_PORT, "0.0.0.0")
 
 io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)
