@@ -1,4 +1,4 @@
-export const WEBSOCKET_PUBLIC_URL = "http://polyquiz.aspc.kz:5505"
+export const WEBSOCKET_PUBLIC_URL = window?.location?.hostname ? `http://${window.location.hostname}:5505` : "http://localhost:5505"
 export const WEBSOCKET_SERVER_PORT = 5505
 
 const QUIZZ_CONFIG = {

@@ -4,14 +4,16 @@ import { WEBSOCKET_PUBLIC_URL } from "../../config.mjs"
 
 export const socket = io(WEBSOCKET_PUBLIC_URL, {
   transports: ["websocket", "polling"],
-  reconnection: true,
+  path: "/socket.io/",
   reconnectionAttempts: 5,
   reconnectionDelay: 1000,
+  autoConnect: true,
+  forceNew: true
 })
 
 // Добавляем обработчики событий для отладки
 socket.on("connect", () => {
-  console.log("Connected to socket server");
+  console.log("Connected to socket server:", socket.id);
 });
 
 socket.on("connect_error", (error) => {

@@ -11,6 +11,13 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { dev, isServer }) => {
+    // Отключаем HMR в production
+    if (!dev) {
+      config.optimization.minimize = true;
+    }
+    return config;
+  },
 }
 
 export default nextConfig
